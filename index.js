@@ -3,7 +3,13 @@
 const GoogleCastClient = require("castv2-client").Client;
 const DefaultMediaReceiver = require("castv2-client").DefaultMediaReceiver;
 const mdns = require("mdns");
-const browser = mdns.createBrowser(mdns.tcp("googlecast"));
+const options = {
+  resolverSequence: [
+    mdns.rst.DNSServiceResolve()
+    , mdns.rst.getaddrinfo({families:[4]})
+  ]
+}
+const browser = mdns.createBrowser(mdns.tcp("googlecast"), options);
 const googleTTS = require("google-tts-api");
 const isIp = require("is-ip");
 
